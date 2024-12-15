@@ -1,0 +1,321 @@
+/*Estilos generales*/
+body {
+    background-image: url("./../img/paven.png");
+    background-repeat: repeat;
+    min-width: 480px;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-decoration: none;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+/*Estilos enlaces*/
+a {
+    color: #529125;
+}
+
+a:hover {
+    color: #285616;
+}
+
+/*Header*/
+header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header #logotipo {
+    width: fit-content;
+}
+
+header #logotipo img {
+    width: 140px;
+}
+
+header h1 {
+    width: fit-content;
+    text-align: center;
+    font-size: 40px;
+    color: #70b231;
+    text-shadow: 0px 2px 4px #333333;
+    margin-bottom: 15px;
+    padding: 0 10px;
+}
+
+/*Menu*/
+nav {
+    width: 100%;
+    background-color: #333;
+    height: auto;
+    box-shadow: 0px 0px 2px grey;
+}
+
+nav .menu-hamburguesa {
+    display: none;
+}
+
+nav ul {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+
+
+nav ul li {
+    width: fit-content;
+    text-align: center;
+    line-height: 40px;
+    border-left: 1px solid gray;
+    border-right: 1px solid gray;
+    padding: 0 10px;
+}
+
+nav ul li a {
+    color: white;
+    display: block;
+}
+
+nav ul li:hover {
+    background-color: #70b231;
+    box-shadow: 0px 0px 4px grey inset;
+}
+
+nav ul li:hover a {
+    color: white;
+}
+
+
+/*Contenido principal*/
+#content {
+    width: 80%;
+    max-width: 1200px;
+    min-height: 1100px;
+    margin: 0 auto;
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#content #aside {
+    /* width: 200px; */
+    flex-basis: 20%;
+    background-color: white;
+    border: 1px solid #CCC;
+    box-shadow: 0px 2px 2px #CCC;
+    height: fit-content;
+    margin-right: 20px;
+}
+
+#content #aside .widget {
+    width: 100%;
+    box-sizing: border-box;
+    border-bottom: 1px dashed gray;
+    padding: 10px;
+}
+
+#content #aside .widget:last-of-type  {
+    border-bottom: none;
+}
+
+#content #aside .widget h3 {
+    text-align: center;
+    background-color: rgb(230, 230, 230);
+    border-top: 1px solid #CCC;
+    border-bottom: 1px solid #CCC;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+}
+
+#content #aside .widget form {
+    width: auto;
+}
+
+#content #aside .widget form label{
+    display: block;
+    text-align: center;
+}
+
+#content #aside .widget form input[type="text"], #content #aside .widget form input[type="password"] {
+    width: 100%;
+    border: 1px solid #CCC;
+    box-shadow: 0px 0px 2px #CCC;
+}
+
+#content #aside .widget form input[type="submit"] {
+    background-color: #70b231;
+    border-radius: 7px;
+    border: 1px solid #70b231;
+    color: white;
+    display: block;
+    padding: 2px 10px;
+    margin: 10px auto 20px auto;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    -ms-border-radius: 7px;
+    -o-border-radius: 7px;
+}
+
+#content #aside .widget form input[type="submit"]:hover {
+    box-shadow: 0px 0px 2px gray;
+
+}
+
+#content #aside .widget a {
+    display: block;
+}
+
+/*Secciones*/
+#sections {
+    flex-basis: 75%;
+}
+
+#sections section {
+    margin-bottom: 40px;
+    background-color: white;
+    box-shadow: 0px 0px 4px #c9c9c9;
+    position: relative;
+    padding: 30px;
+}
+
+#sections section .stickers {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#sections section .stickers .stickerOne {
+    position: absolute;
+    top: -20px;
+    left: 20px;
+}
+
+#sections section .stickers .stickerTwo {
+    position: absolute;
+    top: -20px;
+    right: 20px;
+}
+
+#sections section h2 {
+    text-align: center;
+    border-bottom: 2px solid #CCC;
+    line-height: 40px;
+    font-size: 1.6rem;
+}
+
+#sections section article {
+    padding: 20px 10px 10px 10px;
+}
+
+#sections section article p {
+    text-align: justify;
+}
+
+/*Footer*/ 
+footer {
+    width: 100%;
+    text-align: center;
+    background-color: #333333;
+    color: white;
+    padding: 10px 0;
+}
+
+
+/*Responsive*/
+/*Entre 768px y 1024px*/
+@media screen and (max-width: 1024px) {
+    #content {
+        width: 80%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #content #aside {
+        width: 100%;
+        box-sizing: border-box;
+        display: flex;
+        margin-bottom: 40px;
+        margin-right: 0;
+    }
+
+    #content #aside .widget {
+        border-bottom: none;
+        border-right: 1px dashed gray;
+        padding: 10px;
+    }
+
+    #content #aside .widget:last-of-type{
+        border-right: none;
+    }
+
+    #sections {
+        width: 100%;
+    }
+}
+
+/*Para maximo 480 y 768px*/
+@media screen and (max-width: 768px) {
+
+    #content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #content #aside {
+        width: 100%;
+        max-width: 480px;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 40px;
+    }
+
+    #content #aside .widget {
+        box-sizing: border-box;
+        width: 100%;
+    }
+
+    #content #aside .widget{
+        border-right: none;
+        border-bottom: 1px dashed gray;;
+    }
+
+    #sections {
+        width: 100%;
+    }
+}
+
+/*Mostrar icono de menu hamburguesa*/
+@media screen and (max-width: 480px) {
+    nav ul {
+        display: none;
+    }
+
+    nav .menu-hamburguesa {
+        display: block;
+        font-size: 30px;
+        color: white;
+        padding: 5px;
+        border: unset;
+        background-color: unset;
+        border-radius: 0;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        -ms-border-radius: 0;
+        -o-border-radius: 0;
+    }
+
+    nav .menu-hamburguesa:hover {
+        background-color: #70b231;
+    }
+    
+}
