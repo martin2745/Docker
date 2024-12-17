@@ -1,0 +1,24 @@
+# version: '3'  # <--- La versión ya no es necesaria especificarla
+
+services:
+  db:
+    container_name: postgres_database
+    image: postgres:15.1
+    volumes:
+      # Ruta relativa para la base de datos
+      - ./postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=123456
+
+  pgAdmin:
+    depends_on:
+      - db
+    image: dpage/pgadmin4:6.17
+    ports:
+      - "10000:80"
+    volumes:
+      # Ruta relativa para los datos de pgAdmin
+      - ./pgadmin:/var/lib/pgadmin
+    environment:
+      - PGADMIN_DEFAULT_PASSWORD=123456 
+      - PGADMIN_DEFAULT_EMAIL=superman@google.com
