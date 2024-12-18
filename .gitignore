@@ -1,2 +1,3 @@
-/Recursos/pgadmin
-/Recursos/postgres
+/Recursos/baseDatosPgAdmin/pgadmin
+/Recursos/baseDatosPgAdmin/postgres
+/Recursos/baseDatosPgAdmin/.env

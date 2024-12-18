@@ -209,3 +209,96 @@ pgAdmin-1          | [2024-12-17 17:48:05 +0000] [90] [INFO] Booting worker with
 _NOTA_: Si queremos dejar de ejecutar el compose tendremos que hacer `ctrl + C` y ejecutar `docker compose down` para eliminar los servicios creados.
 
 _NOTA-2_: Tambien podriamos crear a la misma altura que el archivo.yml una carpeta donde se guarda la información del contenedor con la base de datos.
+
+_NOTA-3_: Una mejora interesante sería crear un archivo `.env` con las variables de entorno del proyecto.
+
+```docker
+POSTGRES_PASSWORD=123456
+PGADMIN_PASSWORD=123456
+PGADMIN_EMAIL=superman@google.com
+```
+
+```docker
+version: '3'
+
+services:
+  db:
+    container_name: postgres_database
+    image: postgres:15.1
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
+  pgAdmin:
+    depends_on:
+      - db
+    image: dpage/pgadmin4:6.17
+    ports:
+      - "10000:80"
+    environment:
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD} 
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
+
+volumes:
+  postgres-db:
+    external: true
+```
+
+---
+
+#### Otro ejercicio con Docker Compose
+
+Vamos a crear ahora una aplicación multicontenedor con base de datos MongoDB. Para ello vamos a seguir trabajando con Docker Composr, al igual que anteriormente pero vamos a hacer uso de variables para el proyecto en un archivo `.env`.
+
+```docker
+MONGO_USERNAME=strider
+MONGO_PASSWORD=123456789
+MONGO_DB_NAME=pokemonDB
+```
+
+```docker
+version: '3'
+
+services:
+  db:
+    container_name: ${MONGO_DB_NAME}
+    image: mongo:6.0
+    volumes:
+      - poke-vol:/data/db
+    # ports:
+    #   - 27017:27017
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    command: ['--auth']
+  
+  mongo-express:
+    depends_on:
+      - db
+    image: mongo-express:1.0.0-alpha.4
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_USERNAME}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_PASSWORD}
+      ME_CONFIG_MONGODB_SERVER: ${MONGO_DB_NAME}
+    ports:
+      - 8080:8081
+    restart: always
+
+  poke-app:
+    depends_on:
+      - db
+      - mongo-express
+    image: klerith/pokemon-nest-app:1.0.0
+    ports:
+      - 3000:3000
+    environment:
+      MONGODB: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_DB_NAME}:27017
+      DB_NAME: ${MONGO_DB_NAME}
+    restart: always
+
+volumes:
+  poke-vol:
+    external: false
+```
