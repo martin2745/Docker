@@ -13,7 +13,7 @@ A continuación vamos a definir el conjunto de pasos a realizar y una vez realiz
 
 [pgAdmin](https://hub.docker.com/r/dpage/pgadmin4)
 
-##### 1. Crear un volumen para almacenar la información de la base de datos
+#### 1. Crear un volumen para almacenar la información de la base de datos
 
 ```docker
 PS C:\Users\Carballeira\Documents\Docker> docker volume create postgres-db
@@ -23,8 +23,7 @@ DRIVER    VOLUME NAME
 local     postgres-db
 ```
 
-##### 2. Montar la imagen de postgres así 
-####  OJO: No hay puerto publicado -p, lo que hará imposible acceder a la base de datos con TablePlus
+#### 2. Montar la imagen de postgres 
 
 ```docker
 PS C:\Users\Carballeira\Documents\Docker> docker container run `
@@ -57,7 +56,7 @@ CONTAINER ID   IMAGE           COMMAND                  CREATED         STATUS  
 48e22a64dc01   postgres:15.1   "docker-entrypoint.s…"   8 seconds ago   Up 7 seconds   5432/tcp   postgres-db
 ```
 
-##### 3. Tomar pgAdmin de aquí
+#### 3. Montar la imagen de pgAdmin 
 
 ```docker
 PS C:\Users\Carballeira\Documents\Docker> docker container run `
@@ -92,7 +91,7 @@ CONTAINER ID   IMAGE                 COMMAND                  CREATED          S
 e16c5da33dc8   postgres:15.1         "docker-entrypoint.s…"   12 minutes ago   Up 12 minutes   5432/tcp   
 ```
 
-##### 4. Ingresar a la web con las credenciales de superman
+#### 4. Ingresar a la web con las credenciales de superman
 http://localhost:10000/
 
 # 5. Intentar crear la conexión a la base de datos
@@ -104,16 +103,16 @@ http://localhost:10000/
 6. Username es "postgres" y el password: 123456
 7. Probar la conexión
 
-##### 6. Ohhh no!, no vemos la base de datos, se nos olvidó la red
+#### 6. Ohhh no!, no vemos la base de datos, se nos olvidó la red
 
-##### 7. Crear la red
+#### 7. Crear la red
 
 ```docker
 PS C:\Users\Carballeira\Documents\Docker> docker network create postgres-net
 9aab1d8c097170fdbd4dffc68169de22e246cd5c0e7990dd07755d9a2dfba889
 ```
 
-##### 8. Asignar ambos contenedores a la red
+#### 8. Asignar ambos contenedores a la red
 
 ```docker
 PS C:\Users\Carballeira\Documents\Docker> docker network ls
@@ -124,17 +123,17 @@ e30be88d86cf   bridge         bridge    local
 9aab1d8c0971   postgres-net   bridge    local
 ```
 
-##### 9. Conectar ambos contenedores
+#### 9. Conectar ambos contenedores
 
 ```docker
 PS C:\Users\Carballeira\Documents\Docker> docker network connect postgres-net 8a3
 PS C:\Users\Carballeira\Documents\Docker> docker network connect postgres-net e16
 ``` 
 
-##### 10. Intentar el paso 4. de nuevo.
+#### 10. Intentar el paso 4. de nuevo.
 Si logra establecer la conexión, todo está correcto, proceder a crear una base de datos, schemas, tablas, insertar registros, lo que sea.
 
-##### 11. Saltar de felicidad
+#### 11. Saltar de felicidad
 <img src="https://media.giphy.com/media/5GoVLqeAOo6PK/giphy.gif" alt="happy" />
 
 ---
