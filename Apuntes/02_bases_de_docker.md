@@ -200,7 +200,7 @@ CONTAINER ID   IMAGE                    COMMAND                  CREATED        
 c986be1fafac   docker/getting-started   "/docker-entrypoint.…"   2 minutes ago   Up 2 minutes   80/tcp    determined_solomon
 ```
 
-#### 7. Detener un contenedor
+#### 7. Lanzar y detener un contenedor
 
 Una vez lanzado el contenedor, podemos detenerlo de la siguiente forma.
 
@@ -215,6 +215,11 @@ CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 PS C:\Windows\system32> docker container ls -a
 CONTAINER ID   IMAGE                    COMMAND                  CREATED         STATUS                     PORTS     NAMES
 c986be1fafac   docker/getting-started   "/docker-entrypoint.…"   5 minutes ago   Exited (0) 6 seconds ago             determined_solomon
+PS C:\Windows\system32> docker container start c98
+c98
+PS C:\Windows\system32> docker container ls
+CONTAINER ID   IMAGE                    COMMAND                  CREATED         STATUS         PORTS     NAMES
+c986be1fafac   docker/getting-started   "/docker-entrypoint.…"   5 minutes ago   Up 5 minutes   80/tcp    determined_solomon
 ```
 
 #### 8. Lanzar un contenedor y publicarlo en un puerto
@@ -280,17 +285,26 @@ Status: Downloaded newer image for postgres:latest
 docker.io/library/postgres:latest
 ```
 
-Tal y como se dice en la documentación vamos a ejecutar el siguiente comando: `$ docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres`. Este comando establece:
+Tal y como se dice en la documentación vamos a ejecutar el siguiente comando que establece variables de entorno para una base de datos postgres.
 - --name some-postgres: El nombre del contenedor.
-- -e POSTGRES_PASSWORD=mysecretpassword: Variable de entorno que hace referencia a la contraseña.
-- -d -p 5432:5432 postgres: Lanza de forma desatendida el contenedor en base a la imagen postgres anteriormente descargada estando el puerto 5432 del equipo en escucha con el puerto 5432 habilitado por el contenedor.
+- -e POSTGRES_USER=martin: Variable de entorno que hace referencia al usuario de conexión a la base de datos.
+- -e POSTGRES_PASSWORD=abc123.: Variable de entorno que hace referencia a la contraseña.
+- -e POSTGRES_DB=miBD: Nombre de la base de datos.
+- -dp 5432:5432 postgres: Lanza de forma desatendida el contenedor en base a la imagen postgres anteriormente descargada estando el puerto 5432 del equipo en escucha con el puerto 5432 habilitado por el contenedor.
 
 ```docker
-PS C:\Windows\system32> docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d -p 5432:5432 postgres
+PS C:\Users\Carballeira\Documents\Docker> docker container run `                        
+>> --name miBD ` 
+>> -e POSTGRES_USER=martin `
+>> -e POSTGRES_PASSWORD=abc123. `
+>> -e POSTGRES_DB=miBD `
+>> -dp 5432:5432 `
+>> postgres
 7a885490b13c6e3f700bbfa5aacb7ec50c76d1d40c0caecc9045e52b1da3f999
+
 PS C:\Windows\system32> docker ps
 CONTAINER ID   IMAGE      COMMAND                  CREATED          STATUS          PORTS                    NAMES
-7a885490b13c   postgres   "docker-entrypoint.s…"   15 seconds ago   Up 14 seconds   0.0.0.0:5432->5432/tcp   some-postgres
+7a885490b13c   postgres   "docker-entrypoint.s…"   15 seconds ago   Up 14 seconds   0.0.0.0:5432->5432/tcp   miBD
 ```
 
 Llegados a este punto podría conectarme a mi contenedor que tiene una instancia postgres y crear bases de datos pero en el momento que eliminemos el contenedor se perderá dicha información (posteriormete introduciremos el término volumen). 
@@ -333,153 +347,6 @@ fb69ad382009   postgres:14-alpine3.21   "docker-entrypoint.s…"   8 seconds ago
 
 Realiza los siguientes pasos:
 
-1. Montar la base de datos MARIADB.
-2. Obtener el listado de los contenedores activos.
-3. Ejecutar el comando para ver los logs. `docker container logs <ID del contenedor>`
-4. Identificar cuál es el password del usuario root en los logs (GENERATED ROOT PASSWORD).
-5. Conectarse a MariaDB desde TablePlus user: root pass: El password aleatorio generado.
-
-Descargamos la imagen.
-
-```docker
-PS C:\Users\Carballeira\Documents\Docker> docker pull mariadb:jammy
-jammy: Pulling from library/mariadb
-12077f74b1db: Download complete
-0b3f8ae1fce9: Download complete
-a6321fa47c19: Download complete
-a0b237c7c6ae: Download complete
-a8b1c5f80c2d: Download complete
-61d4eb1159ff: Download complete
-b13b8cff7564: Download complete
-e5739d28aeee: Download complete
-Digest: sha256:e101f9db31916a5d4d7d594dd0dd092fb23ab4f499f1d7a7425d1afd4162c4bc
-Status: Downloaded newer image for mariadb:jammy
-docker.io/library/mariadb:jammy
-
-PS C:\Users\Carballeira\Documents\Docker> docker images
-REPOSITORY   TAG       IMAGE ID       CREATED        SIZE
-mariadb      jammy     e101f9db3191   6 months ago   551MB
-```
-
-Creamos el contenedor.
-
-```docker
-PS C:\Users\Carballeira\Documents\Docker> docker container run `
->> -e MARIADB_RANDOM_ROOT_PASSWORD=yes `
->> -dp 3306:3306 `
->> mariadb:jammy
-db80088d9b0a5dc57a7c019085d059b380f2bb21a9f67ed4a60fa016f8f50169
-
-PS C:\Users\Carballeira\Documents\Docker> docker ps
-CONTAINER ID   IMAGE           COMMAND                  CREATED         STATUS         PORTS                    NAMES
-db80088d9b0a   mariadb:jammy   "docker-entrypoint.s…"   6 seconds ago   Up 5 seconds   0.0.0.0:3306->3306/tcp   boring_almeida
-```
-
-Buscamos la contraseña generada automáticamente que en este caso como se puede ver a continuación será: `&CmTgb-UG}_{h2<e*Y5d$]96n<XPn,h1`.
-
-```docker
-PS C:\Users\Carballeira\Documents\Docker> docker container logs db8
-2024-12-15 08:56:50+00:00 [Note] [Entrypoint]: Entrypoint script for MariaDB Server 1:11.3.2+maria~ubu2204 started.
-2024-12-15 08:56:51+00:00 [Warn] [Entrypoint]: /sys/fs/cgroup/name=systemd:/docker/db80088d9b0a5dc57a7c019085d059b380f2bb21a9f67ed4a60fa016f8f50169
-14:misc:/docker/db80088d9b0a5dc57a7c019085d059b380f2bb21a9f67ed4a60fa016f8f50169
-13:rdma:/docker/db80088d9b0a5dc57a7c019085d059b380f2bb21a9f67ed4a60fa016f8f50169
-12:pids:/docker/db80088d9b0a5dc57a7c019085d059b380f2bb21a9f67ed4a60fa016f8f50169
-11:hugetlb:/docker/db80088d9b0a5dc57a7c019085d059b380f2bb21a9f67ed4a60fa016f8f50169
-10:net_prio:/docker/db80088d9b0a5dc57a7c019085d059b380f2bb21a9f67ed4a60fa016f8f50169
-9:perf_event:/docker/db80088d9b0a5dc57a7c019085d059b380f2bb21a9f67ed4a60fa016f8f50169
-8:net_cls:/docker/db80088d9b0a5dc57a7c019085d059b380f2bb21a9f67ed4a60fa016f8f50169
-7:freezer:/docker/db80088d9b0a5dc57a7c019085d059b380f2bb21a9f67ed4a60fa016f8f50169
-6:devices:/docker/db80088d9b0a5dc57a7c019085d059b380f2bb21a9f67ed4a60fa016f8f50169
-5:memory:/docker/db80088d9b0a5dc57a7c019085d059b380f2bb21a9f67ed4a60fa016f8f50169
-4:blkio:/docker/db80088d9b0a5dc57a7c019085d059b380f2bb21a9f67ed4a60fa016f8f50169
-3:cpuacct:/docker/db80088d9b0a5dc57a7c019085d059b380f2bb21a9f67ed4a60fa016f8f50169
-2:cpu:/docker/db80088d9b0a5dc57a7c019085d059b380f2bb21a9f67ed4a60fa016f8f50169
-1:cpuset:/docker/db80088d9b0a5dc57a7c019085d059b380f2bb21a9f67ed4a60fa016f8f50169
-0::/docker/db80088d9b0a5dc57a7c019085d059b380f2bb21a9f67ed4a60fa016f8f50169/memory.pressure not writable, functionality unavailable to MariaDB
-2024-12-15 08:56:51+00:00 [Note] [Entrypoint]: Switching to dedicated user 'mysql'
-2024-12-15 08:56:51+00:00 [Note] [Entrypoint]: Entrypoint script for MariaDB Server 1:11.3.2+maria~ubu2204 started.
-2024-12-15 08:56:51+00:00 [Note] [Entrypoint]: Initializing database files
-
-
-PLEASE REMEMBER TO SET A PASSWORD FOR THE MariaDB root USER !
-To do so, start the server, then issue the following command:
-
-'/usr/bin/mariadb-secure-installation'
-
-which will also give you the option of removing the test
-databases and anonymous user created by default.  This is
-strongly recommended for production servers.
-
-See the MariaDB Knowledgebase at https://mariadb.com/kb
-
-Please report any problems at https://mariadb.org/jira
-
-The latest information about MariaDB is available at https://mariadb.org/.
-
-Consider joining MariaDB's strong and vibrant community:
-https://mariadb.org/get-involved/
-
-2024-12-15 08:56:52+00:00 [Note] [Entrypoint]: Database files initialized
-2024-12-15 08:56:52+00:00 [Note] [Entrypoint]: Starting temporary server
-2024-12-15 08:56:52+00:00 [Note] [Entrypoint]: Waiting for server startup
-2024-12-15  8:56:52 0 [Note] Starting MariaDB 11.3.2-MariaDB-1:11.3.2+maria~ubu2204 source revision 068a6819eb63bcb01fdfa037c9bf3bf63c33ee42 as process 111
-2024-12-15  8:56:52 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
-2024-12-15  8:56:52 0 [Note] InnoDB: Number of transaction pools: 1
-2024-12-15  8:56:52 0 [Note] InnoDB: Using crc32 + pclmulqdq instructions
-2024-12-15  8:56:52 0 [Note] mariadbd: O_TMPFILE is not supported on /tmp (disabling future attempts)
-2024-12-15  8:56:52 0 [Note] InnoDB: Using liburing
-2024-12-15  8:56:52 0 [Note] InnoDB: Initializing buffer pool, total size = 128.000MiB, chunk size = 2.000MiB
-2024-12-15  8:56:52 0 [Note] InnoDB: Completed initialization of buffer pool
-2024-12-15  8:56:52 0 [Note] InnoDB: File system buffers for log disabled (block size=4096 bytes)
-2024-12-15  8:56:52 0 [Note] InnoDB: End of log at LSN=46300
-2024-12-15  8:56:52 0 [Note] InnoDB: Opened 3 undo tablespaces
-2024-12-15  8:56:52 0 [Note] InnoDB: 128 rollback segments in 3 undo tablespaces are active.
-2024-12-15  8:56:52 0 [Note] InnoDB: Setting file './ibtmp1' size to 12.000MiB. Physically writing the file full; Please wait ...
-2024-12-15  8:56:52 0 [Note] InnoDB: File './ibtmp1' size is now 12.000MiB.
-2024-12-15  8:56:52 0 [Note] InnoDB: log sequence number 46300; transaction id 14       
-2024-12-15  8:56:52 0 [Note] Plugin 'FEEDBACK' is disabled.
-2024-12-15  8:56:52 0 [Note] Plugin 'wsrep-provider' is disabled.
-2024-12-15  8:56:52 0 [Warning] 'user' entry 'root@db80088d9b0a' ignored in --skip-name-resolve mode.
-2024-12-15  8:56:52 0 [Warning] 'proxies_priv' entry '@% root@db80088d9b0a' ignored in --skip-name-resolve mode.
-2024-12-15  8:56:52 0 [Note] mariadbd: Event Scheduler: Loaded 0 events
-2024-12-15  8:56:52 0 [Note] mariadbd: ready for connections.
-Version: '11.3.2-MariaDB-1:11.3.2+maria~ubu2204'  socket: '/run/mysqld/mysqld.sock'  port: 0  mariadb.org binary distribution
-2024-12-15 08:56:53+00:00 [Note] [Entrypoint]: Temporary server started.
-2024-12-15 08:56:54+00:00 [Note] [Entrypoint]: GENERATED ROOT PASSWORD: &CmTgb-UG}_{h2<e*Y5d$]96n<XPn,h1
-2024-12-15 08:56:54+00:00 [Note] [Entrypoint]: Securing system users (equivalent to running mysql_secure_installation)
-
-2024-12-15 08:56:54+00:00 [Note] [Entrypoint]: Stopping temporary server
-2024-12-15  8:56:54 0 [Note] mariadbd (initiated by: unknown): Normal shutdown
-2024-12-15  8:56:54 0 [Note] InnoDB: FTS optimize thread exiting.
-2024-12-15  8:56:54 0 [Note] InnoDB: Starting shutdown...
-2024-12-15  8:56:54 0 [Note] InnoDB: Dumping buffer pool(s) to /var/lib/mysql/ib_buffer_pool
-2024-12-15  8:56:54 0 [Note] InnoDB: Buffer pool(s) dump completed at 241215  8:56:54   
-2024-12-15  8:56:54 0 [Note] InnoDB: Removed temporary tablespace data file: "./ibtmp1" 
-2024-12-15  8:56:54 0 [Note] InnoDB: Shutdown completed; log sequence number 47875; transaction id 15
-2024-12-15  8:56:54 0 [Note] mariadbd: Shutdown complete
-
-2024-12-15 08:56:54+00:00 [Note] [Entrypoint]: Temporary server stopped
-
-2024-12-15 08:56:54+00:00 [Note] [Entrypoint]: MariaDB init process done. Ready for start up.
-
-2024-12-15  8:56:54 0 [Note] Starting MariaDB 11.3.2-MariaDB-1:11.3.2+maria~ubu2204 source revision 068a6819eb63bcb01fdfa037c9bf3bf63c33ee42 as process 1
-2024-12-15  8:56:54 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
-2024-12-15  8:56:54 0 [Note] InnoDB: Initializing buffer pool, total size = 128.000MiB, chunk size = 2.000MiB
-2024-12-15  8:56:54 0 [Note] InnoDB: Completed initialization of buffer pool
-2024-12-15  8:56:54 0 [Note] InnoDB: File system buffers for log disabled (block size=4096 bytes)
-2024-12-15  8:56:54 0 [Note] InnoDB: End of log at LSN=47875
-2024-12-15  8:56:54 0 [Note] InnoDB: Opened 3 undo tablespaces
-2024-12-15  8:56:54 0 [Note] InnoDB: 128 rollback segments in 3 undo tablespaces are active.
-2024-12-15  8:56:54 0 [Note] InnoDB: Setting file './ibtmp1' size to 12.000MiB. Physically writing the file full; Please wait ...
-2024-12-15  8:56:54 0 [Note] InnoDB: File './ibtmp1' size is now 12.000MiB.
-2024-12-15  8:56:54 0 [Note] InnoDB: log sequence number 47875; transaction id 16
-2024-12-15  8:56:54 0 [Note] InnoDB: Loading buffer pool(s) from /var/lib/mysql/ib_buffer_pool
-2024-12-15  8:56:54 0 [Note] Plugin 'FEEDBACK' is disabled.
-2024-12-15  8:56:54 0 [Note] Plugin 'wsrep-provider' is disabled.
-2024-12-15  8:56:54 0 [Note] InnoDB: Buffer pool(s) load completed at 241215  8:56:54
-2024-12-15  8:56:54 0 [Note] Server socket created on IP: '0.0.0.0'.
-2024-12-15  8:56:54 0 [Note] Server socket created on IP: '::'.
-2024-12-15  8:56:54 0 [Note] mariadbd: Event Scheduler: Loaded 0 events
-2024-12-15  8:56:54 0 [Note] mariadbd: ready for connections.
-Version: '11.3.2-MariaDB-1:11.3.2+maria~ubu2204'  socket: '/run/mysqld/mysqld.sock'  port: 3306  mariadb.org binary distribution
-```
+1. Montar la base de datos Postgres con usuario="Tu nombre", contraseña="FP123." bd="docker".
+2. Conectarse a la base de datos con la extensión de VScode PostgreSQL.
+3. Hacer un informe con los pasos explicados en markdown y una imagen de la conexión.
