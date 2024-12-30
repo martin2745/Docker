@@ -15,7 +15,7 @@ Antes de nada, vamos a realizar una tarea de contenedores para repasar los conce
     MARIADB_DATABASE=world-db
 ```
 
-2. Conectarse usando Table Plus a la base de datos con las credenciales del usuario (NO EL ROOT)
+2. Conectarse usando Table Plus o la extensión MySQL de Weijan Chen si estamos en VSCode a la base de datos con las credenciales del usuario (NO EL ROOT)
 
 3. Conectarse a la base de datos world-db
 
@@ -88,7 +88,7 @@ docker container run `
 mariadb:jammy
 ```
 
-A mayores, en lugar de tableplus, vamos hacer uso de phpmyadmin para lo que vamos a crear un contenedor en el puerto 8090 para este servicio.
+A mayores, en lugar de tableplus o la extensión MySQL de VSCode, vamos hacer uso de phpmyadmin para lo que vamos a crear un contenedor en el puerto 8090 para este servicio.
 
 ```docker
 PS C:\Users\Carballeira\Documents\Docker> docker container run `
@@ -305,3 +305,13 @@ root@041c83835b7e:/usr/local/apache2/htdocs# head index.html
   </head>
   <body>
 ```
+
+---
+
+### Tarea
+
+Realiza los siguientes pasos:
+1. Crea una red llamada tarea2 para el ejercicio en la que van a trabajar los contenedores.
+2. Instala un servicio phpmyadmin y una base de datos mysql.
+3. El contenido de la base de datos tiene que estar almacenado en un volumen llamado volumenTarea2.
+4. Hacer un informe con los pasos explicados en markdown y una imagen de la conexión.
