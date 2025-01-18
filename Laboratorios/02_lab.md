@@ -62,7 +62,7 @@ Carga la imagen desde el archivo `httpd.tar` al sistema local.
 docker images | grep httpd
 ```
 
-## 3. Convertir un contenedor en una imagen
+#### 3. Convertir un contenedor en una imagen
 
 ##### Crear un contenedor:
 ```docker
@@ -152,4 +152,13 @@ docker push tuUsuario/nginx-lab
 ##### Buscar la imagen en Docker Hub:
 ```docker
 docker search tuUsuario
+```
+
+#### 6. Alternativa al registry de docker Hub
+
+Un ejemplo de infraestructura de repositorios privada es [harbor](https://goharbor.io/).
+
+```docker
+docker login registry.docker-dca.example -u analista -p password-de-nuestra-instalacion
+docker push registry.docker-dca.example/docker-dca/nginx
 ```
