@@ -343,7 +343,7 @@ fb69ad382009   postgres:14-alpine3.21   "docker-entrypoint.s…"   8 seconds ago
 
 ---
 
-### Tarea
+### Propuesta de actividad
 
 Realiza los siguientes pasos:
 

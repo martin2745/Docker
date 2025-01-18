@@ -308,7 +308,7 @@ root@041c83835b7e:/usr/local/apache2/htdocs# head index.html
 
 ---
 
-### Tarea
+### Propuesta de actividad
 
 Realiza los siguientes pasos:
 1. Crea una red llamada tarea2 para el ejercicio en la que van a trabajar los contenedores.

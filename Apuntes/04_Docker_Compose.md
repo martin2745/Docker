@@ -301,3 +301,14 @@ volumes:
   poke-vol:
     external: false
 ```
+
+---
+
+### Propuesta de actividad
+
+Realiza los siguientes pasos:
+1. Crea un archivo con extensión .yml que a través de docker compose genere los servicios que se concretan a continuación.
+2. Crea los servicios phpmyadmin y una base de datos mysql.
+3. La base de datos tendrá que tener un volumen llamado "volumen3" y pertenecerán a la red "red3".
+4. Los datos a indicar en las variables de entorno son de libre elección.
+5. Hacer un informe con los pasos explicados en markdown y una imagen de la conexión.
