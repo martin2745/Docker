@@ -22,6 +22,16 @@ Docker es una plataforma de software que permite crear, implementar y ejecutar a
 **Diferencia clave**:  
 La **imagen** es el plano o diseño, mientras que el **contenedor** es la construcción activa basada en ese diseño.
 
+**Máquinas virtuales VS Contenedores**
+
+Las máquinas virtuales (VM) emulan un hardware completo y ejecutan un sistema operativo huésped sobre un hipervisor. Cada VM tiene su propio kernel, lo que implica un mayor consumo de recursos y tiempos de arranque más largos. En contraste, los contenedores comparten el kernel del sistema operativo anfitrión y aíslan las aplicaciones a nivel de sistema operativo. Esto los hace más ligeros, rápidos de iniciar y eficientes en el uso de recursos.
+
+Docker es importante porque optimiza este enfoque, permitiendo ejecutar aplicaciones en entornos más livianos que las VMs. Además, ofrece portabilidad, ya que los contenedores funcionan de manera uniforme en cualquier sistema. También facilita la escalabilidad al gestionar múltiples instancias de servicios y garantiza reproducibilidad mediante el uso de imágenes predefinidas (Dockerfiles), asegurando consistencia en diferentes entornos.
+
+![MV_vs_Contenedores](../Recursos/imagenes/01_MV_vs_Contenedores.png)
+
+![Arquitectura_De_Docker](../Recursos/imagenes/02_Arquitectura_Docker.png)
+
 ---
 
 ### Comandos básicos
