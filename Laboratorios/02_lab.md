@@ -109,12 +109,12 @@ docker run -ditP --name intranet1 -v bd2:/var/lib/mysql -v web2:/var/www/html in
 
 ##### Etiquetar una imagen para Docker Hub:
 ```docker
-docker tag intranet-lunes19:v1 agarciaf/intranet
+docker tag intranet-lunes19:v1 tuUsuario/intranet
 ```
 
 ##### Subir la imagen a Docker Hub:
 ```docker
-docker push agarciaf/intranet
+docker push tuUsuario/intranet
 ```
 
 ##### Iniciar sesión en Docker Hub:
@@ -129,7 +129,7 @@ cat /root/.docker/config.json
 
 ##### Buscar imágenes en Docker Hub:
 ```docker
-docker search agarciaf
+docker search tuUsuario
 ```
 
 ##### Cerrar sesión en Docker Hub:
@@ -141,15 +141,15 @@ docker logout
 
 ##### Etiquetar la imagen de Nginx:
 ```docker
-docker tag nginx agarciaf/nginx-lab
+docker tag nginx tuUsuario/nginx-lab
 ```
 
 ##### Subir la imagen de Nginx etiquetada:
 ```docker
-docker push agarciaf/nginx-lab
+docker push tuUsuario/nginx-lab
 ```
 
 ##### Buscar la imagen en Docker Hub:
 ```docker
-docker search agarciaf
+docker search tuUsuario
 ```
