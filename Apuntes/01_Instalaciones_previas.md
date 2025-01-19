@@ -1,8 +1,6 @@
 ### 01 Instalaciones previas
 
-<p align="center">
-  <a href="https://docs.docker.com/" target="blank"><img src="https://devtalles.com/images/moby.png" width="200" alt="Docker Logo" /></a>
-</p>
+![Docker](../Recursos/imagenes/00_Docker.png)
 
 # Curso Docker - Guía práctica de uso para desarrolladores
 
@@ -15,6 +13,7 @@
 4. [Postman](https://www.postman.com/downloads/)
 
 5. [Git](https://git-scm.com/)
+
 ```
 git config --global user.name "Tu nombre"
 git config --global user.email "Tu correo"
@@ -22,28 +21,27 @@ git config --global user.email "Tu correo"
 
 6. [Docker Desktop](https://www.docker.com/get-started)
 
-7. Table Plus: 
-  * [Windows / Mac OSX](https://tableplus.com/)
-  * [Linux](https://tableplus.com/linux)
+7. Table Plus:
+
+- [Windows / Mac OSX](https://tableplus.com/)
+- [Linux](https://tableplus.com/linux)
 
 8. [Guías de atajos Docker](https://devtalles.com/files/docker-cheat-sheet.pdf)
 
-
 ## Extensiones de VSCode
 
-* [NGINX Configuration](https://marketplace.visualstudio.com/items?itemName=william-voyek.vscode-nginx)
+- [NGINX Configuration](https://marketplace.visualstudio.com/items?itemName=william-voyek.vscode-nginx)
 
-* [Activitus Bar](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.activitusbar)
+- [Activitus Bar](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.activitusbar)
 
 ## Extensiones de Chrome
 
-* [Json Viewer Awesome](https://chrome.google.com/webstore/detail/json-viewer-pro/eifflpmocdbdmepbjaopkkhbfmdgijcc)
-
+- [Json Viewer Awesome](https://chrome.google.com/webstore/detail/json-viewer-pro/eifflpmocdbdmepbjaopkkhbfmdgijcc)
 
 ### Tema que estoy usando en VSCode y Wallpaper:
 
-* [Aura Theme](https://marketplace.visualstudio.com/items?itemName=DaltonMenezes.aura-theme)
+- [Aura Theme](https://marketplace.visualstudio.com/items?itemName=DaltonMenezes.aura-theme)
 
-* [Iconos](https://marketplace.visualstudio.com/items?itemName=PKief.material-icon-theme)
+- [Iconos](https://marketplace.visualstudio.com/items?itemName=PKief.material-icon-theme)
 
-* [Wallpapers Developer](https://drive.google.com/drive/folders/1ItU8rbSGJjnh2USOBGwaCo9nYKifPJ6m?usp=sharing)
+- [Wallpapers Developer](https://drive.google.com/drive/folders/1ItU8rbSGJjnh2USOBGwaCo9nYKifPJ6m?usp=sharing)
