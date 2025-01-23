@@ -94,7 +94,7 @@ e16c5da33dc8   postgres:15.1         "docker-entrypoint.s…"   12 minutes ago  
 #### 4. Ingresar a la web con las credenciales de superman
 http://localhost:10000/
 
-# 5. Intentar crear la conexión a la base de datos
+#### 5. Intentar crear la conexión a la base de datos
 1. Click en Servers
 2. Click en Register > Server
 3. Colocar el nombre de: "SuperHeroesDB"  (el nombre no importa)
