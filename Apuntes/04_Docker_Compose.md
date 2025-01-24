@@ -144,8 +144,6 @@ Si logra establecer la conexión, todo está correcto, proceder a crear una base
 A continuación se adjunta el archivo [docker-compose.yml](../Recursos/docker-compose.yml).
 
 ```yml
-version: "3"
-
 services:
   db:
     container_name: postgres_database
@@ -208,19 +206,48 @@ pgAdmin-1          | [2024-12-17 17:48:05 +0000] [90] [INFO] Booting worker with
 
 _NOTA_: Si queremos dejar de ejecutar el compose tendremos que hacer `ctrl + C` y ejecutar `docker compose down` para eliminar los servicios creados.
 
+```docker
+PS C:\Users\gilbl\OneDrive\Escritorio\docker> docker compose up -d
+```
+
 _NOTA-2_: Tambien podriamos crear a la misma altura que el archivo.yml una carpeta donde se guarda la información del contenedor con la base de datos.
+
+```yml
+services:
+  db:
+    container_name: postgres_database
+    image: postgres:15.1
+    volumes:
+      # - postgres-db:/var/lib/postgresql/data
+      - ./postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=123456
+
+  pgAdmin:
+    depends_on:
+      - db
+    image: dpage/pgadmin4:6.17
+    ports:
+      - "10000:80"
+    volumes:
+      - ./pgAdmin:/var/lib/pgadmin
+    environment:
+      - PGADMIN_DEFAULT_PASSWORD=123456
+      - PGADMIN_DEFAULT_EMAIL=superman@google.com
+# volumes:
+# postgres-db:
+# external: true
+```
 
 _NOTA-3_: Una mejora interesante sería crear un archivo `.env` con las variables de entorno del proyecto.
 
-```docker
+```yml
 POSTGRES_PASSWORD=123456
 PGADMIN_PASSWORD=123456
 PGADMIN_EMAIL=superman@google.com
 ```
 
 ```docker
-version: '3'
-
 services:
   db:
     container_name: postgres_database
@@ -245,63 +272,7 @@ volumes:
     external: true
 ```
 
----
-
-#### Otro ejercicio con Docker Compose
-
-Vamos a crear ahora una aplicación multicontenedor con base de datos MongoDB. Para ello vamos a seguir trabajando con Docker Composr, al igual que anteriormente pero vamos a hacer uso de variables para el proyecto en un archivo `.env`.
-
-```docker
-MONGO_USERNAME=strider
-MONGO_PASSWORD=123456789
-MONGO_DB_NAME=pokemonDB
-```
-
-```docker
-version: '3'
-
-services:
-  db:
-    container_name: ${MONGO_DB_NAME}
-    image: mongo:6.0
-    volumes:
-      - poke-vol:/data/db
-    # ports:
-    #   - 27017:27017
-    restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
-    command: ['--auth']
-
-  mongo-express:
-    depends_on:
-      - db
-    image: mongo-express:1.0.0-alpha.4
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_USERNAME}
-      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_PASSWORD}
-      ME_CONFIG_MONGODB_SERVER: ${MONGO_DB_NAME}
-    ports:
-      - 8080:8081
-    restart: always
-
-  poke-app:
-    depends_on:
-      - db
-      - mongo-express
-    image: klerith/pokemon-nest-app:1.0.0
-    ports:
-      - 3000:3000
-    environment:
-      MONGODB: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_DB_NAME}:27017
-      DB_NAME: ${MONGO_DB_NAME}
-    restart: always
-
-volumes:
-  poke-vol:
-    external: false
-```
+_NOTA-4_: Podemos ver la información del docker compose con `docker compose logs` en caso de que hagamos un arranque desatendido.
 
 ---
 
@@ -311,6 +282,6 @@ Realiza los siguientes pasos:
 
 1. Crea un archivo con extensión .yml que a través de docker compose genere los servicios que se concretan a continuación.
 2. Crea los servicios phpmyadmin y una base de datos mysql.
-3. La base de datos tendrá que tener un volumen llamado "volumen3" y pertenecerán a la red "red3".
+3. La base de datos tendrá que tener un volumen llamado "volumen3".
 4. Los datos a indicar en las variables de entorno son de libre elección.
 5. Hacer un informe con los pasos explicados en markdown y una imagen de la conexión.
