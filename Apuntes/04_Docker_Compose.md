@@ -9,6 +9,7 @@ A continuación vamos a definir el conjunto de pasos a realizar y una vez realiz
 #### Sin docker compose
 
 #### Docker Hub images
+
 [Postgres](https://hub.docker.com/_/postgres)
 
 [pgAdmin](https://hub.docker.com/r/dpage/pgadmin4)
@@ -23,15 +24,15 @@ DRIVER    VOLUME NAME
 local     postgres-db
 ```
 
-#### 2. Montar la imagen de postgres 
+#### 2. Montar la imagen de postgres
 
 ```docker
 PS C:\Users\Carballeira\Documents\Docker> docker container run `
->> -d `   
->> --name postgres-db `   
->> -e POSTGRES_PASSWORD=123456 `   
->> -v postgres-db:/var/lib/postgresql/data `   
->> postgres:15.1   
+>> -d `
+>> --name postgres-db `
+>> -e POSTGRES_PASSWORD=123456 `
+>> -v postgres-db:/var/lib/postgresql/data `
+>> postgres:15.1
 Unable to find image 'postgres:15.1' locally
 15.1: Pulling from library/postgres
 536a8b356450: Download complete
@@ -56,7 +57,7 @@ CONTAINER ID   IMAGE           COMMAND                  CREATED         STATUS  
 48e22a64dc01   postgres:15.1   "docker-entrypoint.s…"   8 seconds ago   Up 7 seconds   5432/tcp   postgres-db
 ```
 
-#### 3. Montar la imagen de pgAdmin 
+#### 3. Montar la imagen de pgAdmin
 
 ```docker
 PS C:\Users\Carballeira\Documents\Docker> docker container run `
@@ -88,16 +89,18 @@ Status: Downloaded newer image for dpage/pgadmin4:6.17
 PS C:\Users\Carballeira\Documents\Docker> docker container ls
 CONTAINER ID   IMAGE                 COMMAND                  CREATED          STATUS          PORTS                            NAMES
 8a3ca2ea6b1a   dpage/pgadmin4:6.17   "/entrypoint.sh"         11 minutes ago   Up 11 minutes   443/tcp, 0.0.0.0:10000->80/tcp   pgAdmin
-e16c5da33dc8   postgres:15.1         "docker-entrypoint.s…"   12 minutes ago   Up 12 minutes   5432/tcp   
+e16c5da33dc8   postgres:15.1         "docker-entrypoint.s…"   12 minutes ago   Up 12 minutes   5432/tcp
 ```
 
 #### 4. Ingresar a la web con las credenciales de superman
+
 http://localhost:10000/
 
 #### 5. Intentar crear la conexión a la base de datos
+
 1. Click en Servers
 2. Click en Register > Server
-3. Colocar el nombre de: "SuperHeroesDB"  (el nombre no importa)
+3. Colocar el nombre de: "SuperHeroesDB" (el nombre no importa)
 4. Ir a la pestaña de connection
 5. Colocar el hostname "postgres-db" (el mismo nombre que le dimos al contenedor)
 6. Username es "postgres" y el password: 123456
@@ -128,13 +131,11 @@ e30be88d86cf   bridge         bridge    local
 ```docker
 PS C:\Users\Carballeira\Documents\Docker> docker network connect postgres-net 8a3
 PS C:\Users\Carballeira\Documents\Docker> docker network connect postgres-net e16
-``` 
+```
 
 #### 10. Intentar el paso 4. de nuevo.
-Si logra establecer la conexión, todo está correcto, proceder a crear una base de datos, schemas, tablas, insertar registros, lo que sea.
 
-#### 11. Saltar de felicidad
-<img src="https://media.giphy.com/media/5GoVLqeAOo6PK/giphy.gif" alt="happy" />
+Si logra establecer la conexión, todo está correcto, proceder a crear una base de datos, schemas, tablas, insertar registros, lo que sea.
 
 ---
 
@@ -143,7 +144,7 @@ Si logra establecer la conexión, todo está correcto, proceder a crear una base
 A continuación se adjunta el archivo [docker-compose.yml](../Recursos/docker-compose.yml).
 
 ```yml
-version: '3'
+version: "3"
 
 services:
   db:
@@ -161,8 +162,8 @@ services:
     ports:
       - "10000:80"
     environment:
-      - PGADMIN_DEFAULT_PASSWORD=123456 
-      - PGADMIN_DEFAULT_EMAIL=superman@google.com 
+      - PGADMIN_DEFAULT_PASSWORD=123456
+      - PGADMIN_DEFAULT_EMAIL=superman@google.com
 
 volumes:
   postgres-db:
@@ -175,32 +176,32 @@ Para lanzar el servicio tenemos el siguiente modo.
 PS C:\Users\Carballeira\Documents\Docker\Recursos> docker compose up
 time="2024-12-17T18:47:50+01:00" level=warning msg="C:\\Users\\Carballeira\\Documents\\Docker\\Recursos\\docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
 [+] Running 3/3
- ✔ Network recursos_default      Created                                           0.0s 
- ✔ Container postgres_database   Created                                           0.1s 
- ✔ Container recursos-pgAdmin-1  Created                                           0.1s 
+ ✔ Network recursos_default      Created                                           0.0s
+ ✔ Container postgres_database   Created                                           0.1s
+ ✔ Container recursos-pgAdmin-1  Created                                           0.1s
 Attaching to postgres_database, pgAdmin-1
-postgres_database  | 
+postgres_database  |
 postgres_database  | PostgreSQL Database directory appears to contain a database; Skipping initialization
-postgres_database  | 
+postgres_database  |
 postgres_database  | 2024-12-17 17:47:51.602 UTC [1] LOG:  starting PostgreSQL 15.1 (Debian 15.1-1.pgdg110+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 10.2.1-6) 10.2.1 20210110, 64-bit
 postgres_database  | 2024-12-17 17:47:51.603 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
 postgres_database  | 2024-12-17 17:47:51.603 UTC [1] LOG:  listening on IPv6 address "::", port 5432
 postgres_database  | 2024-12-17 17:47:51.607 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
-postgres_database  | 2024-12-17 17:47:51.614 UTC [29] LOG:  database system was interrupted; last known up at 2024-12-17 16:19:24 UTC                                           
+postgres_database  | 2024-12-17 17:47:51.614 UTC [29] LOG:  database system was interrupted; last known up at 2024-12-17 16:19:24 UTC
 postgres_database  | 2024-12-17 17:47:51.763 UTC [29] LOG:  database system was not properly shut down; automatic recovery in progress
 postgres_database  | 2024-12-17 17:47:51.768 UTC [29] LOG:  redo starts at 0/15541C8
-postgres_database  | 2024-12-17 17:47:51.768 UTC [29] LOG:  invalid record length at 0/15542B0: wanted 24, got 0                                                                
-postgres_database  | 2024-12-17 17:47:51.768 UTC [29] LOG:  redo done at 0/1554278 system usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s                             
+postgres_database  | 2024-12-17 17:47:51.768 UTC [29] LOG:  invalid record length at 0/15542B0: wanted 24, got 0
+postgres_database  | 2024-12-17 17:47:51.768 UTC [29] LOG:  redo done at 0/1554278 system usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
 postgres_database  | 2024-12-17 17:47:51.772 UTC [27] LOG:  checkpoint starting: end-of-recovery immediate wait
 postgres_database  | 2024-12-17 17:47:51.787 UTC [27] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.004 s, sync=0.002 s, total=0.017 s; sync files=2, longest=0.001 s, average=0.001 s; distance=0 kB, estimate=0 kB
-postgres_database  | 2024-12-17 17:47:51.791 UTC [1] LOG:  database system is ready to accept connections                                                                       
+postgres_database  | 2024-12-17 17:47:51.791 UTC [1] LOG:  database system is ready to accept connections
 pgAdmin-1          | NOTE: Configuring authentication for SERVER mode.
-pgAdmin-1          | 
-pgAdmin-1          | pgAdmin 4 - Application Initialisation                             
-pgAdmin-1          | ======================================                             
-pgAdmin-1          | 
-pgAdmin-1          | [2024-12-17 17:48:05 +0000] [1] [INFO] Starting gunicorn 20.1.0    
-pgAdmin-1          | [2024-12-17 17:48:05 +0000] [1] [INFO] Listening at: http://[::]:80 (1)                                                                                    
+pgAdmin-1          |
+pgAdmin-1          | pgAdmin 4 - Application Initialisation
+pgAdmin-1          | ======================================
+pgAdmin-1          |
+pgAdmin-1          | [2024-12-17 17:48:05 +0000] [1] [INFO] Starting gunicorn 20.1.0
+pgAdmin-1          | [2024-12-17 17:48:05 +0000] [1] [INFO] Listening at: http://[::]:80 (1)
 pgAdmin-1          | [2024-12-17 17:48:05 +0000] [1] [INFO] Using worker: gthread
 pgAdmin-1          | [2024-12-17 17:48:05 +0000] [90] [INFO] Booting worker with pid: 90
 ```
@@ -236,7 +237,7 @@ services:
     ports:
       - "10000:80"
     environment:
-      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD} 
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
 
 volumes:
@@ -272,7 +273,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
     command: ['--auth']
-  
+
   mongo-express:
     depends_on:
       - db
@@ -307,6 +308,7 @@ volumes:
 ### Propuesta de actividad
 
 Realiza los siguientes pasos:
+
 1. Crea un archivo con extensión .yml que a través de docker compose genere los servicios que se concretan a continuación.
 2. Crea los servicios phpmyadmin y una base de datos mysql.
 3. La base de datos tendrá que tener un volumen llamado "volumen3" y pertenecerán a la red "red3".
