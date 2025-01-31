@@ -272,7 +272,124 @@ volumes:
     external: true
 ```
 
-_NOTA-4_: Podemos ver la información del docker compose con `docker compose logs` en caso de que hagamos un arranque desatendido.
+_Nota-4_:  Tambien podemos lanzar el docker-compose pasandole las variables en tiempo de ejecucion como se muestra a continuación.
+
+```yml
+services:
+  db:
+    image: mysql:5.7
+    volumes:
+      - "./.data/dbwordpress:/var/lib/mysql"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 
+      MYSQL_DATABASE: 
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: 
+```
+
+```docker
+MYSQL_ROOT_PASSWORD=secret_password MYSQL_DATABASE=rootdesdezero MYSQL_PASSWORD=000000 docker-compose up -d
+```
+
+_NOTA-5_: Podemos ver la información del docker compose con `docker compose logs` en caso de que hagamos un arranque desatendido.
+
+---
+
+#### Otros ejemplos comentados de Docker Compose
+
+Sin red externa definida.
+
+```yml
+version: '3.8' # Versión del esquema de Docker Compose. Asegúrate de que sea compatible con tu versión de Docker.
+services: # Define los servicios que se ejecutarán como contenedores.
+  app: # Nombre del servicio (puedes cambiarlo según tus necesidades).
+    image: myapp:latest # La imagen de Docker que se usará para este servicio.
+    build: # Opcional: Permite construir la imagen desde un Dockerfile.
+      context: . # Directorio donde se encuentra el Dockerfile (normalmente el directorio actual).
+      dockerfile: Dockerfile # Nombre del archivo Dockerfile (opcional si es el predeterminado "Dockerfile").
+    ports:
+      - "8080:80" # Mapea el puerto 80 del contenedor al puerto 8080 en el host.
+    environment: # Variables de entorno para el contenedor.
+      - APP_ENV=production # Configuración del entorno de la aplicación.
+      - DEBUG=false # Activa o desactiva el modo de depuración.
+    volumes:
+      - ./app:/usr/src/app # Mapea un directorio local al directorio dentro del contenedor.
+    depends_on:
+      - db # Define que este servicio depende del servicio "db".
+    restart: unless-stopped # Política de reinicio: reinicia el contenedor excepto si es detenido manualmente.
+
+  db: # Servicio para la base de datos.
+    image: postgres:15 # Imagen de PostgreSQL, versión 15.
+    environment:
+      - POSTGRES_USER=admin # Usuario de PostgreSQL.
+      - POSTGRES_PASSWORD=secret # Contraseña para PostgreSQL.
+      - POSTGRES_DB=mydatabase # Nombre de la base de datos a crear.
+    ports:
+      - "5432:5432" # Expone el puerto de PostgreSQL en el host.
+    volumes:
+      - db_data:/var/lib/postgresql/data # Almacena los datos de la base de datos en un volumen persistente.
+
+  redis: # Servicio opcional para cache.
+    image: redis:7 # Imagen de Redis, versión 7.
+    ports:
+      - "6379:6379" # Expone el puerto 6379 para Redis.
+
+volumes: # Define volúmenes persistentes compartidos entre los servicios.
+  db_data: # Volumen para los datos de la base de datos.
+    driver: local # Usa el driver predeterminado de Docker para volúmenes locales.
+```
+
+Con red externa definida.
+
+```yml
+version: '3.8' # Versión del esquema de Docker Compose.
+services: # Define los servicios que se ejecutarán como contenedores.
+  app: # Servicio de la aplicación.
+    image: myapp:latest # Imagen de Docker para el servicio "app".
+    build: # Opcional: Permite construir la imagen desde un Dockerfile.
+      context: . # Directorio donde se encuentra el Dockerfile.
+      dockerfile: Dockerfile # Nombre del archivo Dockerfile (si es diferente, se debe especificar).
+    ports:
+      - "8080:80" # Mapea el puerto 80 del contenedor al puerto 8080 en el host.
+    environment: # Variables de entorno para configurar el contenedor.
+      - APP_ENV=production # Configura el entorno de la aplicación.
+      - DEBUG=false # Habilita o deshabilita el modo de depuración.
+    volumes:
+      - ./app:/usr/src/app # Mapea un directorio local al contenedor para persistencia o desarrollo.
+    depends_on:
+      - db # Indica que este servicio depende de "db".
+    networks:
+      - custom-network # Conecta este servicio a la red personalizada "custom-network".
+
+  db: # Servicio de base de datos.
+    image: postgres:15 # Imagen de PostgreSQL, versión 15.
+    environment:
+      - POSTGRES_USER=admin # Usuario de PostgreSQL.
+      - POSTGRES_PASSWORD=secret # Contraseña de PostgreSQL.
+      - POSTGRES_DB=mydatabase # Nombre de la base de datos inicial.
+    ports:
+      - "5432:5432" # Expone el puerto 5432 del contenedor al host.
+    volumes:
+      - db_data:/var/lib/postgresql/data # Volumen persistente para los datos de la base de datos.
+    networks:
+      - custom-network # Conecta este servicio a la red personalizada "custom-network".
+
+  redis: # Servicio de cache opcional.
+    image: redis:7 # Imagen de Redis, versión 7.
+    ports:
+      - "6379:6379" # Expone el puerto 6379 del contenedor al host.
+    networks:
+      - custom-network # Conecta este servicio a la red personalizada "custom-network".
+
+volumes: # Define volúmenes persistentes compartidos entre los servicios.
+  db_data: # Volumen para almacenar los datos de PostgreSQL.
+    driver: local # Usa el controlador predeterminado para volúmenes locales.
+
+networks: # Define redes personalizadas para los servicios.
+  custom-network: # Nombre de la red personalizada.
+    driver: bridge # Usa el controlador "bridge" para redes (predeterminado para redes personalizadas).
+```
 
 ---
 
